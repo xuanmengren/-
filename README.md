@@ -15,15 +15,15 @@ ViewModel 监听模型数据的改变和控制视图行为、处理用户交互�
 ViewModel 通过双向数据绑定把 View 层和 Model 层连接了起来，而View 和 Model 之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作DOM, 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 MVVM 来统一管理。
 
 #### 0.2 Vue的生命周期
-
-beforeCreate（创建前） 在数据观测和初始化事件还未开始
-created（创建后） 完成数据观测，属性和方法的运算，初始化事件，$el属性还没有显示出来
-beforeMount（载入前） 在挂载开始之前被调用，相关的render函数首次被调用。实例已完成以下的配置：编译模板，把data里面的数据和模板生成html。注意此时还没有挂载html到页面上。
-mounted（载入后） 在el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用。实例已完成以下的配置：用上面编译好的html内容替换el属性指向的DOM对象。完成模板中的html渲染到html页面中。此过程中进行ajax交互。
-beforeUpdate（更新前） 在数据更新之前调用，发生在虚拟DOM重新渲染和打补丁之前。可以在该钩子中进一步地更改状态，不会触发附加的重渲染过程。
-updated（更新后） 在由于数据更改导致的虚拟DOM重新渲染和打补丁之后调用。调用时，组件DOM已经更新，所以可以执行依赖于DOM的操作。然而在大多数情况下，应该避免在此期间更改状态，因为这可能会导致更新无限循环。该钩子在服务器端渲染期间不被调用。
-beforeDestroy（销毁前） 在实例销毁之前调用。实例仍然完全可用。
-destroyed（销毁后） 在实例销毁之后调用。调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。该钩子在服务器端渲染期间不被调用。
+![](https://cn.vuejs.org/images/lifecycle.png)
+- beforeCreate（创建前） 在数据观测和初始化事件还未开始
+- created（创建后） 完成数据观测，属性和方法的运算，初始化事件，$el属性还没有显示出来
+- beforeMount（载入前） 在挂载开始之前被调用，相关的render函数首次被调用。实例已完成以下的配置：编译模板，把data里面的数据和模板生成html。注意此时还没有挂载html到页面上。
+- mounted（载入后） 在el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用。实例已完成以下的配置：用上面编译好的html内容替换el属性指向的DOM对象。完成模板中的html渲染到html页面中。此过程中进行ajax交互。
+- beforeUpdate（更新前） 在数据更新之前调用，发生在虚拟DOM重新渲染和打补丁之前。可以在该钩子中进一步地更改状态，不会触发附加的重渲染过程。
+- updated（更新后） 在由于数据更改导致的虚拟DOM重新渲染和打补丁之后调用。调用时，组件DOM已经更新，所以可以执行依赖于DOM的操作。然而在大多数情况下，应该避免在此期间更改状态，因为这可能会导致更新无限循环。该钩子在服务器端渲染期间不被调用。
+- beforeDestroy（销毁前） 在实例销毁之前调用。实例仍然完全可用。
+- destroyed（销毁后） 在实例销毁之后调用。调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。该钩子在服务器端渲染期间不被调用。
 
 - 1.什么是vue生命周期？
 答： Vue 实例从创建到销毁的过程，就是生命周期。从开始创建、初始化数据、编译模板、挂载Dom→渲染、更新→渲染、销毁等一系列过程，称之为 Vue 的生命周期。
@@ -219,16 +219,53 @@ Vue.directive('dir2', {
   return value.charAt(0).toUpperCase() + value.slice(1)
     })
 ```
+### 拓展 简单面试题
+
+1.css只在当前组件起作用
+答：在style标签中写入scoped即可 例如：<style scoped></style>
+
+2.v-if 和 v-show 区别
+答：v-if按照条件是否渲染，v-show是display的block或none；
+
+3.$route和$router的区别
+答：$route是“路由信息对象”，包括path，params，hash，query，fullPath，matched，name等路由信息参数。而$router是“路由实例”对象包括了路由的跳转方法，钩子函数等。
+
+4.vue.js的两个核心是什么？
+答：数据驱动、组件系统
+
+5.vue几种常用的指令
+答：v-for 、 v-if 、v-bind、v-on、v-show、v-else
+
+6.vue常用的修饰符？
+答：.prevent: 提交事件不再重载页面；.stop: 阻止单击事件冒泡；.self: 当事件发生在该元素本身而不是子元素的时候会触发；.capture: 事件侦听，事件发生的时候会调用
+
+7.v-on 可以绑定多个方法吗？
+答：可以
+
+8.vue中 key 值的作用？
+答：当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。key的作用主要是为了高效的更新虚拟DOM。
+
+9.什么是vue的计算属性？
+答：在模板中放入太多的逻辑会让模板过重且难以维护，在需要对数据进行复杂处理，且可能多次使用的情况下，尽量采取计算属性的方式。好处：①使得数据处理结构清晰；②依赖于数据，数据更新，处理结果自动更新；③计算属性内部this指向vm实例；④在template调用时，直接写计算属性名即可；⑤常用的是getter方法，获取数据，也可以使用set方法改变数据；⑥相较于methods，不管依赖的数据变不变，methods都会重新计算，但是依赖数据不变的时候computed从缓存中获取，不会重新计算。
+
+10.vue等单页面应用及其优缺点
+答：优点：Vue 的目标是通过尽可能简单的 API 实现响应的数据绑定和组合的视图组件，核心是一个响应的数据绑定系统。MVVM、数据驱动、组件化、轻量、简洁、高效、快速、模块友好。
+缺点：不支持低版本的浏览器，最低只支持到IE9；不利于SEO的优化（如果要支持SEO，建议通过服务端来进行渲染组件）；第一次加载首页耗时相对长一些；不可以使用浏览器的导航按钮需要自行实现前进、后退。
+11.vue 项目获取数据(用axios 发送ajax请求获取数据) 是要在created中比较好还是在mounted中
+答：created
+
 
 ### 1.1 vue指令
 #### 1.1.1 v-text
 - 详情：
     更新元素的 textContent。如果要更新部分的 textContent ，需要使用 {{ Mustache }} 插值。
 - 用法：
+   
     ```html
+     更新元素的textContent
     <div v-text="tx"></div>
-    相当于
-    <div>{{tx}}</div>
+    更新部分的 textContent 
+    <div>haha {{tx}}</div>
     ```       
 #### 1.1.2 v-html
 - 详情：
@@ -242,23 +279,27 @@ Vue.directive('dir2', {
     <div v-html='tx'></div>
     相当于
     <div>{{tx}}</div>
+    不可以
+    tx:"<input />" 容易被xss攻击，被覆盖input提交框,从而获取用户内容
     ```   
 #### 1.1.3 v-if
 - 详情: 
-    根据判断条件判断元素是否销毁，显示
+    根据判断条件判断元素是否销毁，显示，为false时没有DOM节点
 - 用法
-
+使用以下两种必须在上一个兄弟节点中有v-if 
  v-else
  v-else-if  
 #### 1.1.4 v-show
 - 详情: 
     根据表达式之真假值，切换元素的 display CSS 属性。
-    当条件变化时该指令触发过渡效果。
+    当条件变化时该指令触发过渡效果。为false有DOM节点
 - 用法
 ```html
     <div v-show="Boolean">显示</div>
 ```
 #### 1.1.5 v-for
+- 预期：
+    Array | Object | number | string | Iterable (2.6 新增)迭代器
 - 详情: 
     基于源数据多次渲染元素或模板块
 - 用法
@@ -307,10 +348,59 @@ Vue.directive('dir2', {
    - 组件 (对于一个单独的带 prop 的默认插槽)
 - 用法
     提供具名插槽或需要接收 prop 的插槽。
-```html
-    - 匿名插槽
+- !单个插槽
+    除非子组件模板包含至少一个 <slot> 插口，否则父组件的内容将会被丢弃。当子组件模板只有一个没有属性的插槽时，父组件传入的整个内容片段将插入到插槽所在的 DOM 位置，并替换掉插槽标签本身。
+    最初在 <slot> 标签中的任何内容都被视为备用内容。备用内容在子组件的作用域内编译，并且只有在宿主元素为空，且没有要插入的内容时才显示备用内容。
+- !具名插槽
+    <slot> 元素可以用一个特殊的特性 name 来进一步配置如何分发内容。多个插槽可以有不同的名字。具名插槽将匹配内容片段中有对应 slot 特性的元素。
+    仍然可以有一个匿名插槽，它是默认插槽，作为找不到匹配的内容片段的备用插槽。如果没有默认插槽，这些找不到匹配的内容片段将被抛弃。
+- !作用域插槽 2.1新增
+    作用域插槽是一种特殊类型的插槽，用作一个 (能被传递数据的) 可重用模板，来代替已经渲染好的元素。
+    在子组件中，只需将数据传递到插槽，就像你将 prop 传递给组件一样：
 
-    - 具名插槽
+```js
+
+- 匿名插槽(单个插槽)
+    <div id="app">
+        <div>我是父</div>
+        <v-a>
+            <div>显示</div>
+        </v-a>
+    </div>
+    components:{
+           'v-a':{
+               template:"<div>我是子组件<slot>只有在没有要分发的内容时才会显示</slot></div>"
+           }
+        }
+ - 具名插槽
+    <div id="app">
+        <div>我是父</div>
+        <v-a>
+            <div>显示</div>
+            <div slot='aa'>aa</div>
+            <div slot='bb'>bb</div>
+        </v-a>
+    </div>
+    components:{
+           'v-a':{
+               template:"<div>我是子组件<slot name='aa'>aa slot</slot> <slot></slot> <slot name='bb'></slot></div>"
+           }
+        }
+- 作用域插槽
+     <div id="app">
+        <div>我是父</div>
+        <v-a>
+            <div>显示</div>
+            <template v-slot='pr'>
+                <div>{{pr.msg}}</div>
+            </template>
+        </v-a>
+    </div>
+    components:{
+        'v-a':{
+             template:"<div>我是子组件<slot msg='啊哈有'></slot></div>"
+        }
+    }
 ```
 
 #### 1.1.10 v-pre
@@ -504,7 +594,7 @@ this.$refs.子组件.方法
     methods 将被混入到 Vue 实例中。可以直接通过 VM 实例访问这些方法，或者在指令表达式中使用。方法中的 this 自动绑定为 Vue 实例。
 
 
-### 1.5 子父组件的通信
+### 1.5 子传父组件的通信
  $on(event,callback)
 - 用法
     监听当前实例上的自定义事件。事件可以由vm.$emit触发。回调函数会接收所有传入事件触发函数的额外参数。
@@ -543,7 +633,313 @@ $emit( eventName, […args] )
         this.$refs.once.eleFn()
     }
 ```
+### 1.6 父传子
+```js
+    <!-- 父传子 -->
+<!-- 父组件 -->
+    <once :val="value"></one>  
+    import Once from './Once'
+    data(){
+       value1:"父组件要穿给子组件的值", 
+    } 
+    //挂载
+    components:{
+        once:Once
+    } 
+<!-- 子组件 -->
+    <div>{{val}}</div> 
+    <!-- 1.静态 -->
+    props: ["val"]
+    <!-- 2.动态 -->
+    props:{
+        val:{
+            限制
+        }
+    }
+```
+
+### 1.7 非父子组件
+```js
+    var app = new Vue({
+        el: '#app',
+        data: {
+           Bus:new Vue({}) 
+        },
+        components:{
+            'v-a':{
+                template:"<div><input v-model='v1' /><button @click='btn'>提交</button></div>",
+                data(){
+                    return{
+                        v1:''
+                    }
+                },
+                methods: {
+                   btn(){
+                       this.$root.Bus.$emit('event1',this.v1)
+                   }
+                }
+               
+            },
+            'v-b':{
+                template:"<div>{{msg}}</div>",
+                data(){
+                    return{
+                        msg:'haha'
+                    }
+                },
+                created(){
+                    this.$root.Bus.$on('event1',function(val){
+                        console.log(val)
+                        this.msg=val //无效果 溜了
+                    })
+                },
+                //解除事件绑定
+                beforeDestroy() {
+                    this.$root.Bus.$off('event1')
+                },
+               
+            }
+        }
+    })
+```
 
 ## 2 vueX
 ###  2.1什么是vuex
 - Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。
+- 状态自管理应用
+    - state，驱动应用的数据源；
+    - view，以声明方式将 state 映射到视图；
+    - actions，响应在 view 上的用户输入导致的状态变化。
+
+![](https://vuex.vuejs.org/flow.png)
+
+### 2.2 Api及使用
+ 
+![](https://vuex.vuejs.org/vuex.png)
+
+#### 2.2.1 State
+```js
+    调用 
+    1.this.$store.state.xx
+    2.import { mapState } from 'vuex'
+    computed: {
+        localComputed () { /* ... */ },
+        // 使用对象展开运算符将此对象混入到外部对象中
+        ...mapState({
+            // ...
+        })
+        }
+```
+
+#### 2.2.2 Getter
+```js
+    调用
+    1.this.$store.getters.xxFn
+    2. import { mapGetters } from 'vuex'
+    computed: {
+    // 使用对象展开运算符将 getter 混入 computed 对象中
+        ...mapGetters([
+        'doneTodosCount',
+        'anotherGetter',
+        // ...
+        ])
+    }
+```
+
+#### 2.2.3 Mutation 同步
+```js
+    在store中
+    mutations: {
+        increment (state,abs) {
+        // 变更状态
+        state.count++
+        }
+    }
+    调用
+    1.store.commit('increment',10)
+    2.import { mapMutations } from 'vuex'
+      methods: {
+    ...mapMutations([
+      'increment', // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+
+      // `mapMutations` 也支持载荷：
+      'incrementBy' // 将 `this.incrementBy(amount)` 映射为 `this.$store.commit('incrementBy', amount)`
+    ]),
+    ...mapMutations({
+      add: 'increment' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+    })
+  }
+
+```
+
+#### 2.2.4 Action 异步
+Action 类似于 mutation，不同在于：
+- Action 提交的是 mutation，而不是直接变更状态。
+- Action 可以包含任意异步操作。
+
+```js
+在store中
+    actions: {
+        increment ({ commit }) {
+            commit('increment')
+        }
+    }
+调用
+1.store.dispatch('increment')
+    // 以载荷形式分发
+store.dispatch('incrementAsync', {
+  amount: 10
+})
+
+// 以对象形式分发
+store.dispatch({
+  type: 'incrementAsync',
+  amount: 10
+})
+2.import { mapActions } from 'vuex'
+ methods: {
+    ...mapActions([
+      'increment', // 将 `this.increment()` 映射为 `this.$store.dispatch('increment')`
+
+      // `mapActions` 也支持载荷：
+      'incrementBy' // 将 `this.incrementBy(amount)` 映射为 `this.$store.dispatch('incrementBy', amount)`
+    ]),
+    ...mapActions({
+      add: 'increment' // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`
+    })
+  }
+```
+#### 2.2.5 Module  模块
+- 将store分割成模块，每个模块拥有自己的state，mutation,action,getter,甚至是嵌套子模块--从上至下进行同样方式的分割：
+```js
+    // 子模块
+    const mode1={
+    namespaced:true, //命名空间，代码分成
+    state:{
+        msg:"c1模块"
+    },
+    getters:{
+
+    },
+    mutations:{
+        aaa(state){
+            alert(state.msg)
+        }
+    },
+    actions:{
+
+    },
+    modules:{
+        
+    }
+}
+export default mode1; //
+
+// 在store实例中
+import mode1 from '地址'
+modules:{mode1}
+
+// 在组件中调用
+- 1.直接调用
+调用state里的
+this.$store.state.mode1.msg //mode1:子模块 msg:数据
+调用其他
+this.$store.state.commit('model1/fn',参数)
+this.$store.state.dispatch('model1/fn',参数)
+this.$store.getters['mode1/c1Fn']
+辅助函数
+...mapMutations({aa:"mode1/aaa"}),
+...mapMutations('mode1',['aaa'])
+
+
+````
+
+
+
+
+
+## 3 函数抖动和函数节流
+- 函数抖动：
+    多个调用只执行一个，其他的不执行返回 
+
+- 防抖动函数参数
+    1.time或次数
+    2.要执行fn
+    3.回调函数
+```js
+    function debounce(func, wait) {
+    let timer = null;
+    return (...args) => {
+        timer && clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args)
+        }, wait)
+    }
+}
+```
+- 函数节流
+    多个调用，一个一个执行
+- 节流函数参数
+
+```js
+    function throttle(func, wait) {
+    let timer = null, startTime = new Date()
+    return (...args) => {
+        let curTime = new Date();
+        if (timer) {
+            timer = clearTimeout(timer);
+        }
+        // 达到规定触发事件间隔，触发函数
+        if (curTime - startTime >= wait) {
+            func.apply(this, args);
+            startTime = curTime;
+        } else {
+            timer = setTimeout(() => {
+                func.apply(this, args)
+            }, wait)
+        }
+    }
+}
+```
+
+高阶函数：英文叫Higher-order function。JavaScript的函数其实都指向某个变量。既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数。
+
+
+### 3.1 css重绘和回流（重排）
+
+
+### 4 axios
+#### 4.1什么是axios?
+axios是一个基于promise的HTTP库，可以用在浏览器和node.js
+Features
+- 从浏览器中创建 XMLHttpRequests
+- 从 node.js 创建 http 请求
+- 支持 Promise API
+- 拦截请求和响应
+- 转换请求数据和响应数据
+- 取消请求
+- 自动转换 JSON 数据
+- 客户端支持防御 XSRF
+
+### 5 Promise
+
+#### 5.1promise的含义
+Promise 是异步编程的一种解决方案,
+所谓Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。从语法上说，Promise 是一个对象，从它可以获取异步操作的消息。Promise 提供统一的 API，各种异步操作都可以用同样的方法进行处理。
+
+#### 5.2promise的特点
+- 1）对象的状态不受外界影响。Promise对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。这也是Promise这个名字的由来，它的英语意思就是“承诺”，表示其他手段无法改变
+
+- 2）一旦状态改变，就不会再变，任何时候都可以得到这个结果。Promise对象的状态改变，只有两种可能：从pending变为fulfilled和从pending变为rejected。只要这两种情况发生，状态就凝固了，不会再变了，会一直保持这个结果，这时就称为 resolved（已定型）。如果改变已经发生了，你再对Promise对象添加回调函数，也会立即得到这个结果。这与事件（Event）完全不同，事件的特点是，如果你错过了它，再去监听，是得不到结果的。
+
+5.2.1 缺点
+- 1.无法取消Promise，一旦新建它就会立即执行，无法中途取消
+- 2.如果不设置回调函数，Promise内部抛出的错误，不会反应到外部
+- 3.当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）
+
+
+
+
+
+
+
